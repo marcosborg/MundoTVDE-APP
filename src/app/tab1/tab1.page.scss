@@ -1,0 +1,38 @@
+.custom-table {
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.header-row {
+    background-color: var(--ion-color-danger);
+    font-weight: bold;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.header-cell {
+    padding: 10px;
+}
+
+.data-row {
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.data-cell {
+    padding: 10px;
+}
+
+.data-row:last-child {
+    border-bottom: none;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}

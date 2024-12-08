@@ -1,17 +1,131 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-card>
+        <ion-card-content>
+            <ion-segment value="income" [(ngModel)]="segment">
+                <ion-segment-button value="income">
+                    <ion-label>Recebimentos</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="outcome">
+                    <ion-label>Descontos</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-card-content>
+        <div *ngIf="segment == 'income'">
+            <ion-card-header>
+                <ion-card-title>Recebimentos</ion-card-title>
+                <ion-card-subtitle>Confira quanto faturou</ion-card-subtitle>
+            </ion-card-header>
+            <ion-grid class="custom-table">
+                <!-- Cabeçalho -->
+                <ion-row class="header-row">
+                    <ion-col size="4" class="header-cell">Operador</ion-col>
+                    <ion-col size="4" class="header-cell">Líquido</ion-col>
+                    <ion-col size="4" class="header-cell">Impostos</ion-col>
+                </ion-row>
+
+                <!-- Linha 1 -->
+                <ion-row class="data-row">
+                    <ion-col size="4" class="data-cell">UBER</ion-col>
+                    <ion-col size="4" class="data-cell">€ 647.75</ion-col>
+                    <ion-col size="4" class="data-cell">€ 48.60</ion-col>
+                </ion-row>
+
+                <!-- Linha 2 -->
+                <ion-row class="data-row">
+                    <ion-col size="4" class="data-cell">BOLT</ion-col>
+                    <ion-col size="4" class="data-cell">€ 43.99</ion-col>
+                    <ion-col size="4" class="data-cell">€ 3.32</ion-col>
+                </ion-row>
+
+                <!-- Linha 3 -->
+                <ion-row class="data-row">
+                    <ion-col size="4" class="data-cell">TRANSFER's</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+            </ion-grid>
+            <h4 class="margin-left">Totais da semana</h4>
+            <ion-grid class="custom-table">
+                <!-- Linha 1 -->
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Ganhos</ion-col>
+                    <ion-col size="4" class="data-cell">€ 639.82</ion-col>
+                </ion-row>
+
+                <!-- Linha 2 -->
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Descontos</ion-col>
+                    <ion-col size="4" class="data-cell">€ 488.93</ion-col>
+                </ion-row>
+
+                <!-- Linha 3 -->
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Total</ion-col>
+                    <ion-col size="4" class="data-cell">€ 150.89</ion-col>
+                </ion-row>
+            </ion-grid>
+            <ion-badge color="success" class="margin-left margin-bottom">Pago</ion-badge>
+        </div>
+        <div *ngIf="segment == 'outcome'">
+            <ion-card-header>
+                <ion-card-title>Descontos</ion-card-title>
+                <ion-card-subtitle>Confira todos os descontos</ion-card-subtitle>
+            </ion-card-header>
+            <ion-grid class="custom-table">
+                <ion-row class="header-row">
+                    <ion-col size="8" class="header-cell">25-11-2024 a 01-12-2024</ion-col>
+                    <ion-col size="4" class="header-cell">Semana 48</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Aluguer</ion-col>
+                    <ion-col size="4" class="data-cell">€ 320.00</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Gestão</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Seguro</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Combustivel</ion-col>
+                    <ion-col size="4" class="data-cell">€ 168.93</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Portagens</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Débitos</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+                <ion-row class="data-row">
+                    <ion-col size="8" class="header-cell">Créditos</ion-col>
+                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Recibo</ion-card-title>
+            <ion-card-subtitle>Envie o recibo da semana</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <form (submit)="onFileUpload()">
+                <ion-item>
+                    <ion-label position="stacked">Selecione o ficheiro</ion-label>
+                    <input type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png" />
+                </ion-item>
+                <ion-button expand="block" type="submit" [disabled]="!selectedFile">Enviar</ion-button>
+            </form>
+        </ion-card-content>
+    </ion-card>
+
+    <app-chat></app-chat>
 </ion-content>
