@@ -118,14 +118,26 @@
         </ion-card-header>
         <ion-card-content>
             <form (submit)="onFileUpload()">
-                <ion-item>
-                    <ion-label position="stacked">Selecione o ficheiro</ion-label>
-                    <input type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png" />
-                </ion-item>
-                <ion-button expand="block" type="submit" [disabled]="!selectedFile">Enviar</ion-button>
+                <ion-label position="stacked">Selecione o ficheiro</ion-label>
+                <!-- Campo de entrada escondido -->
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png"
+                    style="display: none;" />
+                <!-- Botão estilizado -->
+                <ion-button expand="block" color="primary" (click)="fileInput.click()">
+                    Escolher Ficheiro
+                </ion-button>
+                <!-- Nome do arquivo selecionado -->
+                <p *ngIf="selectedFile" class="file-name">
+                    Ficheiro: {{ selectedFile.name }}
+                </p>
+                <!-- Botão de enviar -->
+                <ion-button expand="block" type="submit" color="success" [disabled]="!selectedFile">
+                    Enviar
+                </ion-button>
             </form>
         </ion-card-content>
     </ion-card>
+
 
     <app-chat></app-chat>
 </ion-content>

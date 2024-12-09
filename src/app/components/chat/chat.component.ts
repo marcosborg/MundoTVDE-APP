@@ -22,4 +22,10 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() { }
 
+  openWhasapp() {
+    const phoneNumber = '351964028006'; // Número com código do país
+    const whatsappURL = `https://wa.me/${phoneNumber}`;
+    window.open(whatsappURL, '_blank'); // Abre o link em uma nova aba ou aplicativo
+  }
+
 }

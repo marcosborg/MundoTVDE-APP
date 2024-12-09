@@ -50,7 +50,7 @@ import { FormsModule } from '@angular/forms';
 export class Tab1Page {
   constructor() { }
 
-  segment: string = 'outcome';
+  segment: string = 'income';
   selectedFile: File | null = null;
 
   onFileSelected(event: any): void {

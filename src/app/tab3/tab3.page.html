@@ -1,5 +1,57 @@
 <app-header></app-header>
 
 <ion-content>
-<app-chat></app-chat>
+    <ion-card>
+        <ion-card-content>
+            <ion-segment [(ngModel)]="segment" value="documents">
+                <ion-segment-button value="documents">
+                    <ion-label>Documentos</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="send">
+                    <ion-label>Enviar</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-card-content>
+        <div *ngIf="segment == 'documents'">
+            <ion-card-header>
+                <ion-card-title>Meus Documentos</ion-card-title>
+                <ion-card-subtitle>Lista de documentos enviados à empresa</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+
+            </ion-card-content>
+        </div>
+        <div *ngIf="segment == 'send'">
+            <ion-card-header>
+                <ion-card-title>Enviar Documentos</ion-card-title>
+                <ion-card-subtitle>Escolha o tipo de documentos que pretende enviar e anexe o
+                    ficheiro</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <form (submit)="onFileUpload()">
+                    <ion-select label="Tipo de documento" placeholder="Selecionar">
+                        <ion-select-option>Cartão de cidadão</ion-select-option>
+                        <ion-select-option>Certificado de motorista TVDE</ion-select-option>
+                    </ion-select>
+                    <ion-label position="stacked">Selecione o ficheiro</ion-label>
+                    <!-- Campo de entrada escondido -->
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png"
+                        style="display: none;" />
+                    <!-- Botão estilizado -->
+                    <ion-button expand="block" color="primary" (click)="fileInput.click()">
+                        Escolher Ficheiro
+                    </ion-button>
+                    <!-- Nome do arquivo selecionado -->
+                    <p *ngIf="selectedFile" class="file-name">
+                        Ficheiro: {{ selectedFile.name }}
+                    </p>
+                    <!-- Botão de enviar -->
+                    <ion-button expand="block" type="submit" color="success" [disabled]="!selectedFile">
+                        Enviar
+                    </ion-button>
+                </form>
+            </ion-card-content>
+        </div>
+    </ion-card>
+    <app-chat></app-chat>
 </ion-content>
