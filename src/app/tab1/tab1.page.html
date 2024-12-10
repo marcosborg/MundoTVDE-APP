@@ -1,10 +1,13 @@
 <app-header></app-header>
 
-<ion-content>
+<ion-content *ngIf="activityLaunches">
 
     <ion-card>
         <ion-card-content>
-            <ion-segment value="income" [(ngModel)]="segment">
+            <ion-segment value="graph" [(ngModel)]="segment">
+                <ion-segment-button value="graph">
+                    <ion-label>Gráficos</ion-label>
+                </ion-segment-button>
                 <ion-segment-button value="income">
                     <ion-label>Recebimentos</ion-label>
                 </ion-segment-button>
@@ -13,101 +16,236 @@
                 </ion-segment-button>
             </ion-segment>
         </ion-card-content>
+        <div *ngIf="segment === 'graph'">
+            <ion-card-header>
+                <ion-card-title>Análise gráfica</ion-card-title>
+                <ion-card-subtitle>Confira a sua performance</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content *ngIf="activityLaunches && activityLaunches[0]?.activity_per_operators">
+                <app-chart [activityData]="activityLaunches[0].activity_per_operators"></app-chart>
+            </ion-card-content>
+
+        </div>
         <div *ngIf="segment == 'income'">
             <ion-card-header>
                 <ion-card-title>Recebimentos</ion-card-title>
                 <ion-card-subtitle>Confira quanto faturou</ion-card-subtitle>
             </ion-card-header>
-            <ion-grid class="custom-table">
-                <!-- Cabeçalho -->
-                <ion-row class="header-row">
-                    <ion-col size="4" class="header-cell">Operador</ion-col>
-                    <ion-col size="4" class="header-cell">Líquido</ion-col>
-                    <ion-col size="4" class="header-cell">Impostos</ion-col>
-                </ion-row>
+            <ion-buttons>
+                <ion-button class="ion-margin-left" fill="clear" size="small" color="light"
+                    (click)="allIncome=!allIncome">
+                    {{ allIncome ? 'Esta semana' : 'Todas as semanas' }}
+                </ion-button>
+            </ion-buttons>
+            <div *ngIf="!allIncome">
+                <ion-grid class="custom-table">
+                    <!-- Cabeçalho -->
+                    <ion-row class="header-row">
+                        <ion-col size="4" class="header-cell">Operador</ion-col>
+                        <ion-col size="4" class="header-cell">Líquido</ion-col>
+                        <ion-col size="4" class="header-cell">Impostos</ion-col>
+                    </ion-row>
 
-                <!-- Linha 1 -->
-                <ion-row class="data-row">
-                    <ion-col size="4" class="data-cell">UBER</ion-col>
-                    <ion-col size="4" class="data-cell">€ 647.75</ion-col>
-                    <ion-col size="4" class="data-cell">€ 48.60</ion-col>
-                </ion-row>
+                    <!-- Linha 1 -->
+                    <ion-row class="data-row">
+                        <ion-col size="4" class="data-cell">UBER</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[0].net
+                            }}</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[0].taxes
+                            }}</ion-col>
+                    </ion-row>
 
-                <!-- Linha 2 -->
-                <ion-row class="data-row">
-                    <ion-col size="4" class="data-cell">BOLT</ion-col>
-                    <ion-col size="4" class="data-cell">€ 43.99</ion-col>
-                    <ion-col size="4" class="data-cell">€ 3.32</ion-col>
-                </ion-row>
+                    <!-- Linha 2 -->
+                    <ion-row class="data-row">
+                        <ion-col size="4" class="data-cell">BOLT</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[1].net
+                            }}</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[1].taxes
+                            }}</ion-col>
+                    </ion-row>
 
-                <!-- Linha 3 -->
-                <ion-row class="data-row">
-                    <ion-col size="4" class="data-cell">TRANSFER's</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-            </ion-grid>
-            <h4 class="margin-left">Totais da semana</h4>
-            <ion-grid class="custom-table">
-                <!-- Linha 1 -->
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Ganhos</ion-col>
-                    <ion-col size="4" class="data-cell">€ 639.82</ion-col>
-                </ion-row>
+                    <!-- Linha 3 -->
+                    <ion-row class="data-row">
+                        <ion-col size="4" class="data-cell">TRANSFER's</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[2].net
+                            }}</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].activity_per_operators[2].taxes
+                            }}</ion-col>
+                    </ion-row>
+                </ion-grid>
+                <h4 class="margin-left">Totais da semana</h4>
+                <ion-grid class="custom-table">
+                    <!-- Linha 1 -->
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Ganhos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].sum | number:'1.2-2' }}</ion-col>
+                    </ion-row>
 
-                <!-- Linha 2 -->
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Descontos</ion-col>
-                    <ion-col size="4" class="data-cell">€ 488.93</ion-col>
-                </ion-row>
+                    <!-- Linha 2 -->
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Descontos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].sub | number:'1.2-2' }}</ion-col>
+                    </ion-row>
 
-                <!-- Linha 3 -->
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Total</ion-col>
-                    <ion-col size="4" class="data-cell">€ 150.89</ion-col>
-                </ion-row>
-            </ion-grid>
-            <ion-badge color="success" class="margin-left margin-bottom">Pago</ion-badge>
+                    <!-- Linha 3 -->
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Total</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].total | number:'1.2-2' }}</ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-badge color="{{ activityLaunches[0].paid == 1 ? 'success' : 'danger' }}"
+                    class="margin-left margin-bottom">{{ activityLaunches[0].paid == 1 ? 'Pago' : 'Por pagar'
+                    }}</ion-badge>
+            </div>
+            <div *ngIf="allIncome">
+                <ion-card-content *ngFor="let activityLaunch of activityLaunches">
+                    <h4>Semana de {{ activityLaunch.week.start_date }}</h4>
+                    <ion-grid class="custom-table">
+                        <!-- Cabeçalho -->
+                        <ion-row class="header-row">
+                            <ion-col size="4" class="header-cell">Operador</ion-col>
+                            <ion-col size="4" class="header-cell">Líquido</ion-col>
+                            <ion-col size="4" class="header-cell">Impostos</ion-col>
+                        </ion-row>
+
+                        <!-- Linha 1 -->
+                        <ion-row class="data-row">
+                            <ion-col size="4" class="data-cell">UBER</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[0].net
+                                }}</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[0].taxes
+                                }}</ion-col>
+                        </ion-row>
+
+                        <!-- Linha 2 -->
+                        <ion-row class="data-row">
+                            <ion-col size="4" class="data-cell">BOLT</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[1].net
+                                }}</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[1].taxes
+                                }}</ion-col>
+                        </ion-row>
+
+                        <!-- Linha 3 -->
+                        <ion-row class="data-row">
+                            <ion-col size="4" class="data-cell">TRANSFER's</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[2].net
+                                }}</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.activity_per_operators[2].taxes
+                                }}</ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <h4 class="margin-left">Totais da semana</h4>
+                    <ion-grid class="custom-table">
+                        <!-- Linha 1 -->
+                        <ion-row class="data-row">
+                            <ion-col size="8" class="header-cell">Ganhos</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.sum | number:'1.2-2' }}</ion-col>
+                        </ion-row>
+
+                        <!-- Linha 2 -->
+                        <ion-row class="data-row">
+                            <ion-col size="8" class="header-cell">Descontos</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.sub | number:'1.2-2' }}</ion-col>
+                        </ion-row>
+
+                        <!-- Linha 3 -->
+                        <ion-row class="data-row">
+                            <ion-col size="8" class="header-cell">Total</ion-col>
+                            <ion-col size="4" class="data-cell">€ {{ activityLaunch.total | number:'1.2-2' }}</ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <ion-badge color="{{ activityLaunch.paid == 1 ? 'success' : 'danger' }}"
+                        class="margin-left margin-bottom">{{ activityLaunch.paid == 1 ? 'Pago' : 'Por pagar'
+                        }}</ion-badge>
+                </ion-card-content>
+            </div>
         </div>
         <div *ngIf="segment == 'outcome'">
             <ion-card-header>
                 <ion-card-title>Descontos</ion-card-title>
                 <ion-card-subtitle>Confira todos os descontos</ion-card-subtitle>
             </ion-card-header>
-            <ion-grid class="custom-table">
-                <ion-row class="header-row">
-                    <ion-col size="8" class="header-cell">25-11-2024 a 01-12-2024</ion-col>
-                    <ion-col size="4" class="header-cell">Semana 48</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Aluguer</ion-col>
-                    <ion-col size="4" class="data-cell">€ 320.00</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Gestão</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Seguro</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Combustivel</ion-col>
-                    <ion-col size="4" class="data-cell">€ 168.93</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Portagens</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Débitos</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-                <ion-row class="data-row">
-                    <ion-col size="8" class="header-cell">Créditos</ion-col>
-                    <ion-col size="4" class="data-cell">€ 0.00</ion-col>
-                </ion-row>
-            </ion-grid>
+            <ion-buttons>
+                <ion-button class="ion-margin-left" fill="clear" size="small" color="light"
+                    (click)="allexpense=!allexpense">
+                    {{ allexpense ? 'Esta semana' : 'Todas as semanas' }}
+                </ion-button>
+            </ion-buttons>
+            <div *ngIf="!allexpense">
+                <ion-grid class="custom-table">
+                    <ion-row class="header-row">
+                        <ion-col size="8" class="header-cell">{{ activityLaunches[0].week.start_date }} a {{
+                            activityLaunches[0].week.end_date }}</ion-col>
+                        <ion-col size="4" class="header-cell">Semana {{ activityLaunches[0].week.number }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Aluguer</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].rent }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Gestão</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].management }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Seguro</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].insurance }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Combustivel</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].fuel }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Portagens</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].tolls }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Débitos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].others }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Créditos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunches[0].refund }}</ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+            <div *ngIf="allexpense">
+                <ion-grid class="custom-table" *ngFor="let activityLaunch of activityLaunches">
+                    <ion-row class="header-row">
+                        <ion-col size="8" class="header-cell">{{ activityLaunch.week.start_date }} a {{
+                            activityLaunch.week.end_date }}</ion-col>
+                        <ion-col size="4" class="header-cell">Semana {{ activityLaunches[0].week.number }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Aluguer</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.rent }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Gestão</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.management }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Seguro</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.insurance }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Combustivel</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.fuel }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Portagens</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.tolls }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Débitos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.others }}</ion-col>
+                    </ion-row>
+                    <ion-row class="data-row">
+                        <ion-col size="8" class="header-cell">Créditos</ion-col>
+                        <ion-col size="4" class="data-cell">€ {{ activityLaunch.refund }}</ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
         </div>
     </ion-card>
 
@@ -116,7 +254,7 @@
             <ion-card-title>Recibo</ion-card-title>
             <ion-card-subtitle>Envie o recibo da semana</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content>
+        <ion-card-content *ngIf="!showReceipt">
             <form (submit)="onFileUpload()">
                 <ion-label position="stacked">Selecione o ficheiro</ion-label>
                 <!-- Campo de entrada escondido -->

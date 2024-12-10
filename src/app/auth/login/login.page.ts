@@ -58,8 +58,8 @@ export class LoginPage implements OnInit {
   ) { }
 
   data: any = {
-    email: 'marcosborges@netlook.pt',
-    password: 'Leonor(2024)'
+    email: 'ruisilva.uberlisboa@gmail.com',
+    password: '123456'
   }
 
   ngOnInit() {
