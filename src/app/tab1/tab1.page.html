@@ -32,9 +32,9 @@
                 <ion-card-subtitle>Confira quanto faturou</ion-card-subtitle>
             </ion-card-header>
             <ion-buttons>
-                <ion-button class="ion-margin-left" fill="clear" size="small" color="light"
+                <ion-button class="ion-margin-left" size="small" color="primary"
                     (click)="allIncome=!allIncome">
-                    {{ allIncome ? 'Esta semana' : 'Todas as semanas' }}
+                    {{ allIncome ? 'Esta semana' : 'Últimas semanas' }}
                 </ion-button>
             </ion-buttons>
             <div *ngIf="!allIncome">
@@ -167,9 +167,9 @@
                 <ion-card-subtitle>Confira todos os descontos</ion-card-subtitle>
             </ion-card-header>
             <ion-buttons>
-                <ion-button class="ion-margin-left" fill="clear" size="small" color="light"
+                <ion-button class="ion-margin-left" size="small" color="light"
                     (click)="allexpense=!allexpense">
-                    {{ allexpense ? 'Esta semana' : 'Todas as semanas' }}
+                    {{ allexpense ? 'Esta semana' : 'Últimas semanas' }}
                 </ion-button>
             </ion-buttons>
             <div *ngIf="!allexpense">

@@ -11,9 +11,17 @@ import {
   IonSegment,
   IonSegmentButton,
   IonLabel,
+  IonList,
+  IonItem,
+  IonNote,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../services/api.service';
+import { PreferencesService } from '../services/preferences.service';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { FunctionsService } from '../services/functions.service';
 
 @Component({
   selector: 'app-tab2',
@@ -32,11 +40,60 @@ import { FormsModule } from '@angular/forms';
     IonSegmentButton,
     IonLabel,
     CommonModule,
-    FormsModule
+    FormsModule,
+    IonList,
+    IonItem,
+    IonNote,
   ]
 })
 export class Tab2Page {
-  constructor() { }
+  constructor(
+    private api: ApiService,
+    private preferences: PreferencesService,
+    private router: Router,
+    private loadingController: LoadingController,
+    private functions: FunctionsService
+  ) { }
 
   segment: string = 'receipts';
+  receipts: any;
+  reports: any;
+  access_token: any;
+
+  ionViewWillEnter() {
+    this.preferences.checkName('access_token').then((resp: any) => {
+      this.access_token = resp.value;
+      if (!this.access_token) {
+        this.router.navigateByUrl('/');
+      } else {
+        this.loadingController.create().then((loading) => {
+          loading.present();
+          let data = {
+            access_token: this.access_token
+          }
+          this.api.myReceipts(data).subscribe((resp) => {
+            this.receipts = resp;
+            this.api.reports(data).subscribe((resp) => {
+              this.reports = resp;
+              loading.dismiss();
+            });
+          }, (err) => {
+            this.functions.errors(err);
+          });
+        });
+      }
+    });
+  }
+
+  openReceipt(link: any) {
+    window.open(link, '_blank');
+  }
+
+  openPdf(activity_launch_id: any) {
+    let data = {
+      activity_launch_id: activity_launch_id,
+      access_token: this.access_token
+    }
+    this.api.reportPdf(data);
+  }
 }

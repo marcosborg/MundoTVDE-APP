@@ -46,7 +46,7 @@ export class Tab3Page {
   constructor() { }
 
   segment: string = 'documents';
-
+  access_token: any;
   selectedFile: File | null = null;
 
   onFileSelected(event: any): void {
