@@ -7,15 +7,15 @@ import { LoadingController } from '@ionic/angular';
 })
 export class ApiService {
 
+  sandbox: boolean = false;
+  baseUrl: string;
+
   constructor(
     private http: HttpClient,
     private loadingController: LoadingController,
-  ) { }
-
-  sandbox: boolean = false;
-
-  //baseUrl: string = 'http://127.0.0.1:8000/api/';
-  baseUrl: string = 'https://mundotvde.pt/api/';
+  ) {
+    this.baseUrl = this.sandbox ? 'http://127.0.0.1:8000/api/' : 'https://mundotvde.pt/api/';
+  }
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -94,5 +94,33 @@ export class ApiService {
       })
     };
     return this.http.get(this.baseUrl + 'app/documents', this.httpOptions);
+  }
+
+  uploadReceipt(data: FormData, accessToken: string) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`
+    });
+    return this.http.post(`${this.baseUrl}app/send-receipt`, data, {
+      headers
+    });
+  }
+
+  myDocuments(data: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Accept-Language': 'pt',
+        'Authorization': 'Bearer ' + data.access_token
+      })
+    };
+    return this.http.get(this.baseUrl + 'app/my-documents', this.httpOptions);
+  }
+
+  uploadDocument(data: FormData, accessToken: string) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`
+    });
+    return this.http.post(`${this.baseUrl}app/send-document`, data, {
+      headers
+    });
   }
 }

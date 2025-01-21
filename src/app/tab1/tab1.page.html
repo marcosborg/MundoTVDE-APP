@@ -254,7 +254,7 @@
             <ion-card-title>Recibo</ion-card-title>
             <ion-card-subtitle>Envie o recibo da semana</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content *ngIf="!showReceipt">
+        <ion-card-content *ngIf="can_create_receipt">
             <form (submit)="onFileUpload()">
                 <ion-label position="stacked">Selecione o ficheiro</ion-label>
                 <!-- Campo de entrada escondido -->
@@ -262,20 +262,21 @@
                     style="display: none;" />
                 <!-- Botão estilizado -->
                 <ion-button expand="block" color="primary" (click)="fileInput.click()">
-                    Escolher Ficheiro
+                    {{ selectedFile ? selectedFile.name : 'Escolher Ficheiro' }}
                 </ion-button>
-                <!-- Nome do arquivo selecionado -->
-                <p *ngIf="selectedFile" class="file-name">
-                    Ficheiro: {{ selectedFile.name }}
-                </p>
+                <ion-item lines="none">
+                    <ion-input labelPlacement="stacked" label="Valor do recibo (€)" [(ngModel)]="value"></ion-input>
+                </ion-item>
                 <!-- Botão de enviar -->
                 <ion-button expand="block" type="submit" color="success" [disabled]="!selectedFile">
                     Enviar
                 </ion-button>
             </form>
         </ion-card-content>
+        <ion-card-content *ngIf="!can_create_receipt">
+            <p>Recibo já enviado</p>
+        </ion-card-content>
     </ion-card>
-
 
     <app-chat></app-chat>
 </ion-content>

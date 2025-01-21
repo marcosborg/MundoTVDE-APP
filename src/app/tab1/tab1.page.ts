@@ -16,6 +16,7 @@ import {
   IonItem,
   IonButton,
   IonButtons,
+  IonInput,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../components/header/header.component';
 import { ChatComponent } from '../components/chat/chat.component';
@@ -54,6 +55,7 @@ import { FunctionsService } from '../services/functions.service';
     IonButton,
     ChartComponent,
     IonButtons,
+    IonInput,
   ]
 })
 export class Tab1Page {
@@ -81,10 +83,8 @@ export class Tab1Page {
             loading.dismiss();
             this.activityLaunches = resp.activityLaunches;
             this.last_receipt = resp.last_receipt;
-            console.log({
-              activityLaunches: this.activityLaunches,
-              last_receipt: this.last_receipt
-            });
+            this.value = this.last_receipt.value;
+            this.can_create_receipt = resp.can_create_receipt;
           }, (err) => {
             this.functions.errors(err);
           });
@@ -100,7 +100,8 @@ export class Tab1Page {
   last_receipt: any;
   allIncome: boolean = false;
   allexpense: boolean = false;
-  showReceipt: boolean = false;
+  can_create_receipt: boolean = false;
+  value: number = 0;
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -110,31 +111,37 @@ export class Tab1Page {
     }
   }
 
-  onFileUpload(): void {
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('file', this.selectedFile);
-
-      // Simule o envio para um servidor (substitua pela sua API)
-      console.log('Enviando arquivo:', this.selectedFile.name);
-
-      // Faça a requisição para sua API (exemplo usando HttpClient):
-      // this.http.post('URL_DA_SUA_API', formData).subscribe(response => {
-      //   console.log('Resposta do servidor:', response);
-      // });
+  async onFileUpload(): Promise<void> {
+    if (!this.selectedFile) {
+      console.error('Nenhum arquivo selecionado para upload.');
+      return;
     }
+
+    if (!this.access_token) {
+      console.error('Access token não encontrado. Abortando upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('value', this.value.toString());
+
+    const loading = await this.loadingController.create({
+      message: 'Enviando recibo...'
+    });
+
+    await loading.present();
+
+    this.api.uploadReceipt(formData, this.access_token).subscribe(
+      (response: any) => {
+        loading.dismiss();
+        console.log('Resposta do servidor:', response);
+      },
+      (error) => {
+        loading.dismiss();
+        console.error('Erro no upload:', error);
+      }
+    );
   }
-
-  checkLastReceiptTime() {
-    const now = new Date().getTime();
-    const lastReceiptTime = new Date(this.last_receipt.created_at).getTime();
-    const timeDifference = now - lastReceiptTime;
-
-    // 24 horas em milissegundos = 24 * 60 * 60 * 1000
-    const twentyFourHours = 24 * 60 * 60 * 1000;
-
-    this.showReceipt = timeDifference > twentyFourHours;
-  }
-
 
 }
