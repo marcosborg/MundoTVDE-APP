@@ -36,20 +36,19 @@
             </ion-card-header>
             <ion-card-content>
                 <form (submit)="onFileUpload()">
-                    <ion-label position="stacked">Selecione o ficheiro</ion-label>
-                    <!-- Campo de entrada escondido -->
-                    <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png"
-                        style="display: none;" />
-                    <!-- Botão estilizado -->
-                    <ion-button expand="block" color="primary" (click)="fileInput.click()">
-                        {{ selectedFile ? selectedFile.name : 'Escolher Ficheiro' }}
-                    </ion-button>
                     <ion-item lines="none">
                         <ion-select label="Tipo de documento" placeholder="Selecionar" [(ngModel)]="selectedFileType">
                             <ion-select-option *ngFor="let file_type of file_types"
                                 value="{{ file_type.collection_name }}">{{ file_type.name }}</ion-select-option>
                         </ion-select>
                     </ion-item>
+                    <!-- Campo de entrada escondido -->
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png"
+                        style="display: none;" />
+                    <!-- Botão estilizado -->
+                    <ion-button expand="block" color="primary" (click)="fileInput.click()">
+                        {{ selectedFile ? selectedFile.name : 'Carregar Ficheiro' }}
+                    </ion-button>
                     <!-- Botão de enviar -->
                     <ion-button expand="block" type="submit" color="success" [disabled]="!selectedFile">
                         Enviar

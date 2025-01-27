@@ -17,6 +17,7 @@ import {
   IonButton,
   IonFooter,
   IonToolbar,
+  IonInputPasswordToggle,
 } from '@ionic/angular/standalone';
 import { PreferencesService } from 'src/app/services/preferences.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -44,6 +45,7 @@ import { FunctionsService } from 'src/app/services/functions.service';
     IonButton,
     IonFooter,
     IonToolbar,
+    IonInputPasswordToggle,
   ]
 })
 export class LoginPage implements OnInit {
@@ -63,7 +65,11 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.preferences.removeName('access_token');
+
+  }
+
+  ionViewWillEnter() {
+    
   }
 
   doLogin() {

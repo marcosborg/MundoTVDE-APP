@@ -82,10 +82,14 @@ export class Tab1Page {
           this.api.admin(data).subscribe((resp: any) => {
             loading.dismiss();
             this.activityLaunches = resp.activityLaunches;
+            console.log(this.activityLaunches[0]);
             this.last_receipt = resp.last_receipt;
             this.value = this.last_receipt.value;
             this.can_create_receipt = resp.can_create_receipt;
           }, (err) => {
+            loading.dismiss();
+            this.preferences.removeName('access_token');
+            this.router.navigateByUrl('/');
             this.functions.errors(err);
           });
         });

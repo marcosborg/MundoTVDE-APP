@@ -13,7 +13,9 @@
           <ion-input labelPlacement="stacked" type="email" label="Email" placeholder="driver@mundotvde.pt" [(ngModel)]="data.email"></ion-input>
         </ion-item>
         <ion-item lines="none">
-          <ion-input labelPlacement="stacked" type="password" label="Password" placeholder="******" [(ngModel)]="data.password"></ion-input>
+          <ion-input labelPlacement="stacked" type="password" label="Password" placeholder="******" [(ngModel)]="data.password">
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
         </ion-item>
       </ion-list>
     </ion-card-content>

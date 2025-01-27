@@ -78,6 +78,9 @@ export class Tab2Page {
               loading.dismiss();
             });
           }, (err) => {
+            loading.dismiss();
+            this.preferences.removeName('access_token');
+            this.router.navigateByUrl('/');
             this.functions.errors(err);
           });
         });
