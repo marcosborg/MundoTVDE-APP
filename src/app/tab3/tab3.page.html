@@ -46,7 +46,12 @@
                     <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.jpg,.png"
                         style="display: none;" />
                     <!-- Botão estilizado -->
+                     <!--
                     <ion-button expand="block" color="primary" (click)="fileInput.click()">
+                        {{ selectedFile ? selectedFile.name : 'Carregar Ficheiro' }}
+                    </ion-button>
+                    -->
+                    <ion-button expand="block" (click)="captureImage()" color="primary">
                         {{ selectedFile ? selectedFile.name : 'Carregar Ficheiro' }}
                     </ion-button>
                     <!-- Botão de enviar -->

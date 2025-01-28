@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { PreferencesService } from '../services/preferences.service';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-tab3',
@@ -108,6 +109,37 @@ export class Tab3Page {
       this.selectedFile = file;
       console.log('Arquivo selecionado:', file.name);
     }
+  }
+
+  async captureImage() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
+
+      if (image.dataUrl) {
+        const imageBlob = this.dataURItoBlob(image.dataUrl);
+        this.selectedFile = new File([imageBlob], 'camera_image.jpg', { type: 'image/jpeg' });
+        console.log('Imagem capturada:', this.selectedFile);
+      } else {
+        console.error('Erro: dataUrl está indefinido.');
+      }
+    } catch (error) {
+      console.error('Erro ao capturar imagem:', error);
+    }
+  }
+
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
   }
 
   async onFileUpload(): Promise<void> {
